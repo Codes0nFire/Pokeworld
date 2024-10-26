@@ -4,6 +4,7 @@ import Loading from './Loading';
 import { Link, useLocation } from 'react-router-dom';
 import axios from '../utils/myaxios';
 import Header from './Header';
+import { toast } from 'react-toastify';
 
 
 const Home = () => {
@@ -19,6 +20,9 @@ const { pokemon, setpokemon, copypokemon, setcopypokemon }=useContext(Pokemoncon
 let {search,pathname}=useLocation();
 
 const getPokemon = async () => {
+ if (search.split('=')[1]==""){
+  return
+ }
   try {
     let { data } = await axios(`pokemon/${search.split('=')[1]}`);
   
@@ -29,9 +33,12 @@ const getPokemon = async () => {
   }];
    
   setpokemon(singlepokemonDetails);
-  alert("Pokemon Found")
+ 
+  
   } catch (error) {
-    alert("No Such pokemons exist please check for any spelling mistakes!!")
+    toast.error("No Pokémon found. Please check the spelling.")
+    return
+    
     
   }
   

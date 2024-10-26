@@ -22,7 +22,7 @@ const Header = () => {
           <input
             type="text"
             placeholder="Search Pokémon..."
-            className="w-full p-2 rounded-md text-black"
+            className="w-full p-2 rounded-md text-black outline-none"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />

@@ -36,12 +36,12 @@ const Details = () => {
   }, []);
 
   return pokemon ? (
-    <div className="min-h-screen max-h-screen flex items-center justify-center bg-white text-white p-4 lg:p-6">
-      <div className="max-w-5xl w-full bg-black rounded-lg shadow-lg p-4 lg:p-10 bg-opacity-90 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
+    <div className="min-h-screen max-h-screen flex items-center justify-center bg-white text-black p-4 lg:p-6">
+      <div className="max-w-5xl w-full bg-white rounded-lg shadow-2xl p-4 lg:p-10 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
         
         {/* Pokémon Image */}
         <div className="flex-shrink-0 w-full lg:w-1/2 flex justify-center lg:justify-start">
-          <div className="w-2/3 lg:w-3/4 h-40 lg:h-64 bg-white rounded-md shadow-lg">
+          <div className="w-2/3 lg:w-3/4 h-40 lg:h-64 bg-gray-100 rounded-md shadow-lg">
             <img 
               src={pokemon.detailurl}
               alt={pokemon.name}
@@ -49,28 +49,27 @@ const Details = () => {
             />
           </div>
         </div>
-  
+
         {/* Pokémon Info and Stats */}
         <div className="w-full lg:w-1/2">
           <h1 className="text-4xl lg:text-5xl font-medium text-center lg:text-left mb-2 lg:mb-4 tracking-wide">{pokemon.name}</h1>
           
           <div className="mt-2 lg:mt-4">
-            <p className="text-gray-400 text-xs lg:text-sm mb-1">Height: {pokemon.height}m</p>
-            <p className="text-gray-400 text-xs lg:text-sm mb-2 lg:mb-4">Weight: {pokemon.weight} kg</p>
+            <p className="text-gray-600 text-xs lg:text-sm mb-1">Height: {pokemon.height}m</p>
+            <p className="text-gray-600 text-xs lg:text-sm mb-2 lg:mb-4">Weight: {pokemon.weight} kg</p>
           </div>
-          
           
           <ul className="space-y-3 lg:space-y-4 text-base lg:text-lg">
             {Object.keys(pokemon.stats).map((stat) => (
-              <li key={stat} className="text-gray-300">
+              <li key={stat} className="text-gray-800">
                 <div className="flex justify-between">
                   <span className="capitalize">{stat}</span>
                   <span>{pokemon.stats[stat]}</span>
                 </div>
-                <div className="w-full h-2 lg:h-3 bg-gray-800 rounded-md mt-1 lg:mt-2">
+                <div className="w-full h-2 lg:h-3 bg-gray-300 rounded-md mt-1 lg:mt-2">
                   <div
                     style={{ width: `${pokemon.stats[stat] * 0.5}%`, backgroundColor: pokemon.color }}
-                    className="h-full rounded-md "
+                    className="h-full rounded-md"
                   ></div>
                 </div>
               </li>
@@ -82,7 +81,6 @@ const Details = () => {
   ) : (
     <Loading />
   );
-  
 };
 
 export default Details;
