@@ -5,7 +5,7 @@ const Loading = () => {
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="flex flex-col items-center">
         <img
-          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" // Pikachu sprite
+          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png" // Charmeleon sprite
           alt="Loading"
           className="scale-150 w-32 h-32 mb-4 animate-pulse" 
         />

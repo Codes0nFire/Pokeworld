@@ -1,113 +1,88 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from '../utils/myaxios';
 import { useParams } from 'react-router-dom';
 import Loading from './Loading';
 
 const Details = () => {
+  const [pokemon, setPokemon] = useState(null);
+  const { name } = useParams();
 
-  const [pokemon, setpokemon] = useState(null)
+  const getPokemon = async () => {
+    let { data } = await axios(`pokemon/${name}`);
+    const speciesData = await axios(data.species.url);
+    const color = speciesData.data.color.name;
 
-  const{name}=useParams()
+    let pokemonDetails = {
+      name: data.name,
+      detailurl: data.sprites.other.home.front_default,
+      stats: {
+        hp: data.stats[0].base_stat,
+        attack: data.stats[1].base_stat,
+        defence: data.stats[2].base_stat,
+        specialattack: data.stats[3].base_stat,
+        specialdefence: data.stats[4].base_stat,
+        speed: data.stats[5].base_stat,
+      },
+      height: data.height,
+      weight: data.weight,
+      color: color
+    };
 
-  const getpokemon=async()=>{
+    setPokemon(pokemonDetails);
+  };
 
-    let {data}=await axios(`pokemon/${name}`)
-
-    
-    let pokemonDetails= { 
-    name:data.name,
-    
-    detailurl:data.sprites.other.home.front_default,
-    
-    stats:{
-        hp:data.stats[0].base_stat,
-        attack:data.stats[1].base_stat,
-        defence:data.stats[2].base_stat,
-        specialattck:data.stats[3].base_stat,
-        specialdefence:data.stats[4].base_stat,
-        speed:data.stats[5].base_stat,
-
-    },
-    height: data.height,
-    weight: data.weight}
-
-    setpokemon(pokemonDetails)
-     
-    
-    
-    
-   
-}
-
-
-useEffect(() => {
-  getpokemon();
-}, [])
-
-  
-
-
-  
+  useEffect(() => {
+    getPokemon();
+  }, []);
 
   return pokemon ? (
-    <div className="min-h-screen flex items-center justify-center bg-white text-white p-6">
-      <div className="max-w-lg w-full bg-black rounded-lg shadow-lg p-8">
+    <div className="min-h-screen max-h-screen flex items-center justify-center bg-white text-white p-4 lg:p-6">
+      <div className="max-w-5xl w-full bg-black rounded-lg shadow-lg p-4 lg:p-10 bg-opacity-90 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
+        
         {/* Pokémon Image */}
-        <div className="flex justify-center mb-6">
-          <div className="w-full h-64 bg-white rounded-md shadow-lg   mx-4">
+        <div className="flex-shrink-0 w-full lg:w-1/2 flex justify-center lg:justify-start">
+          <div className="w-2/3 lg:w-3/4 h-40 lg:h-64 bg-white rounded-md shadow-lg">
             <img 
-              src= {pokemon.detailurl}
-              
-              className="w-3/4 h-full object-top rounded-md mx-auto"
-              
+              src={pokemon.detailurl}
+              alt={pokemon.name}
+              className="w-full h-full object-contain rounded-md mx-auto"
             />
           </div>
         </div>
-
-        {/* Pokémon Name */}
-        <h1 className="text-5xl font-medium text-center mb-4 tracking-wide">{pokemon.name}</h1>
-
+  
         {/* Pokémon Info and Stats */}
-        <div className="mt-8">
-          <h2 className="text-3xl font-semibold mb-6">Info</h2>
-         
-          <p className="text-gray-400 text-sm mb-1">Height: {pokemon.height}m</p>
-          <p className="text-gray-400 text-sm mb-4">Weight: {pokemon.weight} kg</p>
-
-          {/* Pokémon Stats */}
-          <h2 className="text-3xl font-semibold mt-6 mb-4">Stats</h2>
-          <ul className="grid grid-cols-2 gap-4 text-lg">
-            <li className="flex justify-between text-gray-300 px-4 py-2 bg-gray-800 rounded-md shadow-inner">
-              <span>HP</span>
-              <span>{pokemon.stats.hp}</span>
-            </li>
-            <li className="flex justify-between text-gray-300 px-4 py-2 bg-gray-800 rounded-md shadow-inner">
-              <span>Attack</span>
-              <span>{pokemon.stats.attack}</span>
-            </li>
-            <li className="flex justify-between text-gray-300 px-4 py-2 bg-gray-800 rounded-md shadow-inner">
-              <span>Defense</span>
-              <span>{pokemon.stats.defence}</span>
-            </li>
-            <li className="flex justify-between text-gray-300 px-4 py-2 bg-gray-800 rounded-md shadow-inner">
-              <span>Speed</span>
-              <span>{pokemon.stats.speed}</span>
-            </li>
-
-            <li className="flex justify-between text-gray-300 px-4 py-2 bg-gray-800 rounded-md shadow-inner">
-              <span>SpecialAttack</span>
-              <span>{pokemon.stats.specialattck}</span>
-            </li>
-
-            <li className="flex justify-between text-gray-300 px-4 py-2 bg-gray-800 rounded-md shadow-inner">
-              <span>SpecialDefence</span>
-              <span>{pokemon.stats.specialdefence}</span>
-            </li>
+        <div className="w-full lg:w-1/2">
+          <h1 className="text-4xl lg:text-5xl font-medium text-center lg:text-left mb-2 lg:mb-4 tracking-wide">{pokemon.name}</h1>
+          
+          <div className="mt-2 lg:mt-4">
+            <p className="text-gray-400 text-xs lg:text-sm mb-1">Height: {pokemon.height}m</p>
+            <p className="text-gray-400 text-xs lg:text-sm mb-2 lg:mb-4">Weight: {pokemon.weight} kg</p>
+          </div>
+          
+          
+          <ul className="space-y-3 lg:space-y-4 text-base lg:text-lg">
+            {Object.keys(pokemon.stats).map((stat) => (
+              <li key={stat} className="text-gray-300">
+                <div className="flex justify-between">
+                  <span className="capitalize">{stat}</span>
+                  <span>{pokemon.stats[stat]}</span>
+                </div>
+                <div className="w-full h-2 lg:h-3 bg-gray-800 rounded-md mt-1 lg:mt-2">
+                  <div
+                    style={{ width: `${pokemon.stats[stat] * 0.5}%`, backgroundColor: pokemon.color }}
+                    className="h-full rounded-md "
+                  ></div>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
     </div>
-  ):<Loading/>;
+  ) : (
+    <Loading />
+  );
+  
 };
 
 export default Details;

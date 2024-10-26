@@ -1,6 +1,7 @@
 import axios from './myaxios'
 import React, { useEffect, useState } from 'react'
 import { createContext } from 'react'
+import { useLocation } from 'react-router-dom'
 
 
 export const Pokemoncontext=createContext()
@@ -8,10 +9,12 @@ export const Pokemoncontext=createContext()
 const Context = ({children}) => {
 
 const [pokemon, setpokemon] = useState(null)
+const [copypokemon, setcopypokemon] = useState(null)
 
 const getpokemon=async()=>{
 
-    let {data:{results}}=await axios("/pokemon?limit=1000")
+    let {data:{results}}=await axios("/pokemon?limit=1302")
+    
 
     let pokemonDetails=await Promise.all(
 
@@ -22,17 +25,7 @@ const getpokemon=async()=>{
                 url:details.data.sprites.other.dream_world.front_default,
                 detailurl:details.data.sprites.other.showdown.back_default,
                 type:details.data.types.map(t=>t.type.name),
-                stats:{
-                    hp:details.data.stats[0].base_stat,
-                    attack:details.data.stats[1].base_stat,
-                    defence:details.data.stats[2].base_stat,
-                    specialattck:details.data.stats[3].base_stat,
-                    specialdefence:details.data.stats[4].base_stat,
-                    speed:details.data.stats[5].base_stat,
-
-                },
-                height: details.data.height,
-                weight: details.data.weight
+                
                 
             }
         })
@@ -40,6 +33,7 @@ const getpokemon=async()=>{
     )
 
     setpokemon(pokemonDetails)
+    setcopypokemon(pokemonDetails)
     
    
 }
@@ -52,8 +46,10 @@ useEffect(() => {
 
 
 
+
+
   return (
-    <Pokemoncontext.Provider value={[pokemon, setpokemon]}>
+    <Pokemoncontext.Provider value={{ pokemon, setpokemon, copypokemon, setcopypokemon }}>
       {children}
     </Pokemoncontext.Provider>
   )
