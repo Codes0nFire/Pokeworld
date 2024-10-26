@@ -4,25 +4,23 @@ import Loading from './components/Loading'
 import Details from './components/Details'
 
 import Evolution from './components/Evolution'
+import { Route, Routes } from 'react-router-dom'
 
 
 
 function App() {
- 
+
 
   return (
-    <>
-    {/* <Home/> */}
-
-    {/* <Details/> */}
-
-    {/* <Abilities/> */}
-
-    {/* <Evolution/> */}
-
-    <Loading/>
     
-    </>
+    <Routes>
+      <Route path='/' element={<Home/>} />
+      <Route path='/detail/:name' element={<Details/>} />
+    </Routes>
+   
+  
+    
+    
   )
 }
 
