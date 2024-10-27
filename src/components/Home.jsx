@@ -13,7 +13,7 @@ const Home = () => {
   const getPokemon = async () => {
     if (search.split('=')[1] === "") return;
     try {
-      let { data } = await axios(`pokemon/${search.split('=')[1]}`);
+      let { data } = await axios(`pokemon/${search.split('=')[1].toLowerCase()}`);
       let singlepokemonDetails = [{
         name: data.name,
         url: data.sprites.other.dream_world.front_default,
