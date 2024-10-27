@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Pokemoncontext } from '../utils/Context';
 import Loading from './Loading';
 import { Link, useLocation } from 'react-router-dom';
@@ -6,107 +6,49 @@ import axios from '../utils/myaxios';
 import Header from './Header';
 import { toast } from 'react-toastify';
 
-
 const Home = () => {
+  const { pokemon, setpokemon, copypokemon } = useContext(Pokemoncontext);
+  let { search } = useLocation();
 
- 
+  const getPokemon = async () => {
+    if (search.split('=')[1] === "") return;
+    try {
+      let { data } = await axios(`pokemon/${search.split('=')[1]}`);
+      let singlepokemonDetails = [{
+        name: data.name,
+        url: data.sprites.other.dream_world.front_default,
+        type: data.types.map(t => t.type.name),
+      }];
+      setpokemon(singlepokemonDetails);
+    } catch (error) {
+      toast.error("No Pokémon found. Please check the spelling.");
+    }
+  };
 
-const { pokemon, setpokemon, copypokemon, setcopypokemon }=useContext(Pokemoncontext)
+  useEffect(() => {
+    if (search !== "") getPokemon();
+    else setpokemon(copypokemon);
+  }, [search]);
 
-
-
-
-
-let {search,pathname}=useLocation();
-
-const getPokemon = async () => {
- if (search.split('=')[1]==""){
-  return
- }
-  try {
-    let { data } = await axios(`pokemon/${search.split('=')[1]}`);
-  
-  let singlepokemonDetails = [{
-    name: data.name,
-    url: data.sprites.other.dream_world.front_default,
-    type:data.types.map(t=>t.type.name),
-  }];
-   
-  setpokemon(singlepokemonDetails);
- 
-  
-  } catch (error) {
-    toast.error("No Pokémon found. Please check the spelling.")
-    return
-    
-    
-  }
-  
-};
-
-useEffect(() => {
-  if (search != "" ){
-    getPokemon()
-  }
-  else{
-    setpokemon(copypokemon)
-  }
-  
-}, [search]);
-
-
-
-
-
-
-console.log(pokemon)
-
-
-
-
-  
   return pokemon ? (
-    <div className="min-h-screen flex flex-col " >
-      {/* Header Section */}
-       <Header/>
-      {/* Main Content Section */}
+    <div className="min-h-screen flex flex-col">
+      <Header />
       <main className="flex-1 mt-24 p-4 overflow-y-auto">
-      
-
-        {/* Pokémon List Section */}
         <section className="p-4">
-       
-          <div  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {/*Pokémon Card  */}
-            
-            {pokemon && pokemon.map((p,i)=>{
-              return <Link to={`/detail/${p.name}`} key={i} className="bg-white rounded-lg shadow-2xl p-6 flex flex-col items-center">
-              <img
-                src={p.url}
-                alt="Bulbasaur"
-                className="w-32 h-32"
-              />
-              <h4 className="text-lg font-semibold mt-4 text-green-700">{p.name.toUpperCase()}</h4>
-              <p className="text-red-600">{p.type[0]?p.type[0]:""}{p.type[1]?"/":""}{p.type[1]}</p>
-            </Link>
-            })}
-
-
-
-
-            
-
-            
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pokemon.map((p, i) => (
+              <Link to={`/detail/${p.name}`} key={i}  className="bg-white rounded-lg shadow-2xl p-4 lg:p-6 flex flex-col items-center">
+                <img  src={p.url} alt={p.name}
+                 className="w-28 h-28 lg:w-32 lg:h-32 transition-transform duration-300 transform hover:scale-125" />
+                <h4  className="text-lg font-semibold mt-4">{p.name.toUpperCase()}</h4>
+                <p style={{color:`${p.color}`}} >{p.type.join("/")}</p>
+              </Link>
+            ))}
           </div>
         </section>
       </main>
-
-      
-      {/* <footer style={{ backgroundColor: '#FFD700' }} className=" text-white p-4 text-center fixed bottom-0 left-0 w-full z-10 shadow-md">
-        <p>&copy; 2024 Pokeworld. All rights reserved.</p>
-      </footer> */}
     </div>
-  ):<Loading/>;
+  ) : <Loading />;
 };
 
 export default Home;

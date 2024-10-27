@@ -3,7 +3,7 @@ import Home from './components/Home'
 import Loading from './components/Loading'
 import Details from './components/Details'
 
-import Evolution from './components/Evolution'
+
 import { Route, Routes } from 'react-router-dom'
 
 

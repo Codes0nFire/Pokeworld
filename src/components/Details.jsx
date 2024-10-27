@@ -14,7 +14,7 @@ const Details = () => {
 
     let pokemonDetails = {
       name: data.name,
-      detailurl: data.sprites.other.home.front_default,
+      detailurl:data.sprites.other.dream_world.front_default,
       stats: {
         hp: data.stats[0].base_stat,
         attack: data.stats[1].base_stat,
@@ -36,7 +36,7 @@ const Details = () => {
   }, []);
 
   return pokemon ? (
-    <div className="min-h-screen max-h-screen flex items-center justify-center bg-white text-black p-4 lg:p-6">
+    <div className="min-h-screen max-h-screen flex items-center justify-center bg-white  p-4 lg:p-6">
       <div className="max-w-5xl w-full bg-white rounded-lg shadow-2xl p-4 lg:p-10 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
         
         {/* Pokémon Image */}

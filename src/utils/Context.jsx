@@ -18,13 +18,18 @@ const getpokemon=async()=>{
 
     let pokemonDetails=await Promise.all(
 
-        results.map(async (p)=>{
+        results.map(async (p,i)=>{
             const details=await axios.get(p.url)
+            
+             const speciesData = await axios.get(details.data.species.url);
+            
+             const color = speciesData.data.color.name;
             return {
                 name:p.name,
                 url:details.data.sprites.other.dream_world.front_default,
                 detailurl:details.data.sprites.other.showdown.back_default,
                 type:details.data.types.map(t=>t.type.name),
+                color:color,
                 
                 
             }

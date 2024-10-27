@@ -20,13 +20,14 @@ const Header = () => {
         </div>
         <div className="flex-grow max-w-xs flex items-center">
           <input
+            required
             type="text"
             placeholder="Search Pokémon..."
             className="w-full p-2 rounded-md text-black outline-none"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <Link onClick={(e)=>setQuery("")} to={`/?pokemon=${query}`} className="ml-2 bg-white text-black px-4 py-2 rounded-md shadow-md hover:bg-gray-200">
+          <Link  onClick={(e)=>setQuery("")} to={`/?pokemon=${query}`} className="ml-2 bg-white text-black px-2 py-2 rounded-md shadow-md hover:bg-gray-200">
             Search
           </Link>
         </div>
